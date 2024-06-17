@@ -1,0 +1,16 @@
+{
+  "name": "translation-merge",
+  "version": "1.0.0",
+  "description": "GitHub Action to merge [Voxelite](https://github.com/voxelite)'s translations into single per-language JSON file. Based on [`voxelite/json-merge@v1`](https://github.com/marketplace/actions/voxelite-json-merger).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0"
+  }
+}

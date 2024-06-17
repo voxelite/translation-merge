@@ -1,0 +1,15 @@
+name: 'Voxelite Translation Merger'
+description: 'Merge translations into single per-language JSON file'
+inputs:
+  in-directory:
+    description: 'Path to your directory containing all direct translation files and per-language directories'
+    required: true
+  out-directory:
+    description: 'Directory to write language files into'
+    required: true
+outputs:
+  languages:
+    description: 'All mentioned languages, no matter how many translated keys they have'
+runs:
+  using: 'node20'
+  main: 'index.js'
