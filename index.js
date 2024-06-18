@@ -50,7 +50,7 @@ function processFiles(inFile, inDirectory, outFile)
 const inDirectory = core.getInput('in-directory');
 const outDirectory = core.getInput('out-directory');
 
-const languageNameRegex = /^[a-z]{2}(\\-[a-zA-Z]{2})*$/
+const languageNameRegex = /^[a-z]{2}(-[a-zA-Z]{2})*$/
 
 try
 {
