@@ -28,6 +28,31 @@ jobs:
           name: solo
           path: output/
 
+  language_variant:
+    runs-on: ubuntu-latest
+    name: language_variant test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          in-directory: test/language_variant
+          out-directory: output
+
+      - name: Processed languages
+        shell: bash
+        run: |
+          echo ${{ steps.test.outputs.languages }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: language_variant
+          path: output/
+
   combined:
     runs-on: ubuntu-latest
     name: combined test
