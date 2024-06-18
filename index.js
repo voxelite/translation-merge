@@ -52,6 +52,9 @@ const outDirectory = core.getInput('out-directory');
 
 try
 {
+    if(!fs.existsSync(outDirectory))
+        fs.mkdirSync(outDirectory, { recursive: true });
+
     let languages = new Set;
     fs.readdirSync(inDirectory, { withFileTypes: true }).forEach(fileInfo => {
         if(fileInfo.isDirectory())
@@ -73,6 +76,8 @@ try
         }
     });
 
+    core.info("languages: " + Array.from(languages).join(','));
+
     let usedLanguages = new Set;
     languages.forEach(language => {
         let argFile = null;
@@ -83,10 +88,13 @@ try
         if(fs.existsSync(inDirectory + '/' + language)) //TODO and is directory
             argDirectory = inDirectory + '/' + language;
 
-        const outputJson = processFiles(argFile, argDirectory, outDirectory + '/' + language);
+        const outputJson = processFiles(argFile, argDirectory, outDirectory + '/' + language + '.json');
         if(outputJson !== null)
             usedLanguages.add(language);
     });
+
+    core.info("usedLanguages: " + Array.from(usedLanguages).join(','));
+
     core.setOutput("languages", Array.from(usedLanguages).join(','));
 }
 catch(error)

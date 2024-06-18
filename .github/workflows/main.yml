@@ -1,0 +1,127 @@
+on: [push]
+
+jobs:
+  solo:
+    runs-on: ubuntu-latest
+    name: solo test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          in-directory: test/solo
+          out-directory: output
+
+      - name: Processed languages
+        shell: bash
+        run: |
+          echo ${{ steps.test.outputs.languages }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: solo
+          path: output/
+
+  combined:
+    runs-on: ubuntu-latest
+    name: combined test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          in-directory: test/combined
+          out-directory: output
+
+      - name: Processed languages
+        shell: bash
+        run: |
+          echo ${{ steps.test.outputs.languages }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: combined
+          path: output/
+
+  dir:
+    runs-on: ubuntu-latest
+    name: dir test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          in-directory: test/dir
+          out-directory: output
+
+      - name: Processed languages
+        shell: bash
+        run: |
+          echo ${{ steps.test.outputs.languages }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dir
+          path: output/
+
+  multiple_solo:
+    runs-on: ubuntu-latest
+    name: multiple_solo test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          in-directory: test/multiple_solo
+          out-directory: output
+
+      - name: Processed languages
+        shell: bash
+        run: |
+          echo ${{ steps.test.outputs.languages }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: multiple_solo
+          path: output/
+
+  multiple_combined:
+    runs-on: ubuntu-latest
+    name: multiple_combined test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          in-directory: test/multiple_combined
+          out-directory: output
+
+      - name: Processed languages
+        shell: bash
+        run: |
+          echo ${{ steps.test.outputs.languages }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: multiple_combined
+          path: output/
