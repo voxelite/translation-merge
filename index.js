@@ -50,6 +50,8 @@ function processFiles(inFile, inDirectory, outFile)
 const inDirectory = core.getInput('in-directory');
 const outDirectory = core.getInput('out-directory');
 
+const languageNameRegex = /^[a-z]{2}(\\-[a-zA-Z]{2})*$/
+
 try
 {
     if(!fs.existsSync(outDirectory))
@@ -59,19 +61,28 @@ try
     fs.readdirSync(inDirectory, { withFileTypes: true }).forEach(fileInfo => {
         if(fileInfo.isDirectory())
         {
-            //TODO Check with Regex
-            languages.add(fileInfo.name);
+            if(languageNameRegex.test(fileInfo.name))
+                languages.add(fileInfo.name);
+            else
+                core.warning("Directory " + fileInfo.name + " was skipped - incorrect language format");
+
         }
         else if(fileInfo.isFile())
         {
             if(!fileInfo.name.endsWith(".json"))
             {
-                core.warning("Unsupported file " + fileInfo.name);
+                core.warning("File " + fileInfo.name + " was skipped - unsupported extension");
+                return;
+            }
+            const language = fileInfo.name.substring(0, fileInfo.name.length - ".json".length);
+
+            // Validate name usability
+            if(!languageNameRegex.test(fileInfo.name))
+            {
+                core.warning("File " + fileInfo.name + " was skipped - invalid name for an object");
                 return;
             }
 
-            //TODO Check with Regex
-            const language = fileInfo.name.substring(0, fileInfo.name.length - ".json".length);
             languages.add(language);
         }
     });
