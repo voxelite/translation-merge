@@ -77,7 +77,7 @@ try
             const language = fileInfo.name.substring(0, fileInfo.name.length - ".json".length);
 
             // Validate name usability
-            if(!languageNameRegex.test(fileInfo.name))
+            if(!languageNameRegex.test(language))
             {
                 core.warning("File " + fileInfo.name + " was skipped - invalid name for an object");
                 return;
