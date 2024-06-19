@@ -3,9 +3,12 @@ name: Test behaviour
 on: [push]
 
 jobs:
-  solo:
+  run_test:
     runs-on: ubuntu-latest
-    name: solo test
+    strategy:
+      matrix:
+        test_name: [ 'solo', 'language_variant', 'combined', 'dir', 'multiple_solo', 'multiple_combined' ]
+    name: ${{ matrix.test_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -14,141 +17,16 @@ jobs:
         id: test
         uses: ./
         with:
-          in-directory: test/solo
+          in-directory: test/${{ matrix.test_name }}
           out-directory: output
 
       - name: Processed languages
         shell: bash
         run: |
-          echo ${{ steps.test.outputs.languages }}
+          echo "Processed languages: ${{ steps.test.outputs.languages }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: solo
-          path: output/
-
-  language_variant:
-    runs-on: ubuntu-latest
-    name: language_variant test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test
-        id: test
-        uses: ./
-        with:
-          in-directory: test/language_variant
-          out-directory: output
-
-      - name: Processed languages
-        shell: bash
-        run: |
-          echo ${{ steps.test.outputs.languages }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: language_variant
-          path: output/
-
-  combined:
-    runs-on: ubuntu-latest
-    name: combined test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test
-        id: test
-        uses: ./
-        with:
-          in-directory: test/combined
-          out-directory: output
-
-      - name: Processed languages
-        shell: bash
-        run: |
-          echo ${{ steps.test.outputs.languages }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: combined
-          path: output/
-
-  dir:
-    runs-on: ubuntu-latest
-    name: dir test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test
-        id: test
-        uses: ./
-        with:
-          in-directory: test/dir
-          out-directory: output
-
-      - name: Processed languages
-        shell: bash
-        run: |
-          echo ${{ steps.test.outputs.languages }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dir
-          path: output/
-
-  multiple_solo:
-    runs-on: ubuntu-latest
-    name: multiple_solo test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test
-        id: test
-        uses: ./
-        with:
-          in-directory: test/multiple_solo
-          out-directory: output
-
-      - name: Processed languages
-        shell: bash
-        run: |
-          echo ${{ steps.test.outputs.languages }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: multiple_solo
-          path: output/
-
-  multiple_combined:
-    runs-on: ubuntu-latest
-    name: multiple_combined test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test
-        id: test
-        uses: ./
-        with:
-          in-directory: test/multiple_combined
-          out-directory: output
-
-      - name: Processed languages
-        shell: bash
-        run: |
-          echo ${{ steps.test.outputs.languages }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: multiple_combined
+          name: ${{ matrix.test_name }}
           path: output/
